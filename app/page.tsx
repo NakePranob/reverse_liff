@@ -6,6 +6,8 @@ import { liff } from '@line/liff';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/lib/line_liff/types';
 import { sendMessage } from '@/lib/line_liff/utils/send-message';
+import { Moon, Sun } from "lucide-react"
+import { useTheme } from "next-themes"
 
 export default function Home() {
 
@@ -19,6 +21,8 @@ export default function Home() {
 
         getProfile();
     }, []);
+
+    const { theme, setTheme } = useTheme()
 
     return (
         <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
@@ -78,6 +82,12 @@ export default function Home() {
                 </ol>
 
                 <div className="flex flex-col items-center gap-4 sm:flex-row">
+                    <Button
+                        variant="outline"
+                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    >
+                        {theme === "dark" ? <Sun /> : <Moon />}
+                    </Button>
                     <a
                         className="bg-foreground text-background flex h-10 items-center justify-center gap-2 rounded-full border border-solid border-transparent px-4 text-sm font-medium transition-colors hover:bg-[#383838] sm:h-12 sm:w-auto sm:px-5 sm:text-base dark:hover:bg-[#ccc]"
                         href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
