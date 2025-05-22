@@ -1,18 +1,61 @@
 'use client';
+
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { liff } from '@line/liff';
 import { Button } from '@/components/ui/button';
+import { Profile } from '@/lib/line_liff/types';
+import { sendMessage } from '@/lib/line_liff/utils/send_message';
 
 export default function Home() {
+
+    const [lineProfile, setLineProfile] = useState<Profile | null>(null);
+
+    useEffect(() => {
+        const getProfile = async () => {
+            const profile = await liff.getProfile();
+            setLineProfile(profile);
+        };
+
+        getProfile();
+    }, []);
+
     return (
         <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
             <main className="row-start-2 flex flex-col items-center gap-[32px] sm:items-start">
-                <div className='flex justify-end'>
+                {lineProfile && (
+                    <div className='flex items-center gap-2'>
+                        <Image
+                            src={lineProfile.pictureUrl || ''}
+                            alt={lineProfile.displayName}
+                            width={50}
+                            height={50}
+                            className="rounded-full"
+                        />
+                        <p>{lineProfile.displayName}</p>
+                    </div>
+                )}
+                {lineProfile && (
+                    <p>profile name: {lineProfile?.displayName}</p>
+                )}
+                <div className='flex justify-end gap-2 w-full'>
                     <Button onClick={() => {
                         liff.logout();
                         window.location.reload();
                     }}>
                         Logout
+                    </Button>
+                    <Button onClick={async () => {
+                        try {
+                            if (!lineProfile) return;
+                            await sendMessage(lineProfile.userId, [{ type: 'text', text: 'Hello from LIFF' }]);
+                            alert('Message sent successfully');
+                        } catch (error) {
+                            console.error('Error sending message:', error);
+                            alert('Error sending message');
+                        }
+                    }}>
+                        send message
                     </Button>
                 </div>
                 <Image
