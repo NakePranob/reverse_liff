@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { liff } from '@line/liff';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/lib/line_liff/types';
-import { sendMessage } from '@/lib/line_liff/utils/send_message';
+import { sendMessage } from '@/lib/line_liff/utils/send-message';
 
 export default function Home() {
 
