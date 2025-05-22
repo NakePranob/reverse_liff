@@ -18,6 +18,9 @@ export function LiffProvider({ children }: { children: React.ReactNode }) {
                     liff.login();
                 }
 
+                const profile = await liff.getProfile();
+                console.log('Profile: ', profile);
+
                 setIsReady(true);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Failed to initialize LIFF');
